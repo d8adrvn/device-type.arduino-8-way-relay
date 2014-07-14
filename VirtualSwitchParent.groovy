@@ -16,7 +16,7 @@ preferences {
         input "switch8", title: "Switch for relay 8", "capability.switch", required: false
 	}
     section("Which Arduino relay board to control?") {
-		input "arduino", "device.arduinoRelayBoard"
+		input "arduino", "capability.switch"
     }    
 }
 
