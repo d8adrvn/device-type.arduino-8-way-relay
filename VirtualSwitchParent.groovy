@@ -4,6 +4,18 @@
  *  Author: badgermanus@gmail.com
  *  Date: 2014-03-26
  */
+ 
+ definition(
+    name: "Irrigation Virtual Integration App",
+    namespace: "",
+    author: "Stan Dotson",
+    description: "SmartApp to integrate virtual switches with Smart Sprinkler Device Type",
+    category: "My Apps",
+    iconUrl: "https://s3.amazonaws.com/smartapp-icons/Convenience/Cat-Convenience.png",
+    iconX2Url: "https://s3.amazonaws.com/smartapp-icons/Convenience/Cat-Convenience@2x.png",
+    iconX3Url: "https://s3.amazonaws.com/smartapp-icons/Convenience/Cat-Convenience@2x.png")
+    
+    
 preferences {
 	section("Connect these virtual switches to the Arduino's relays") {
 		input "switch1", title: "Switch for relay 1", "capability.switch"
