@@ -7,7 +7,8 @@
  */
  
  definition(
-    name: "Irrigation Virtual Integration App",
+    name: "Irrigation Virtual Switch Integration App for 8 Zone Sprinkler",
+    version: "0.9",
     namespace: "",
     author: "Stan Dotson",
     description: "SmartApp to integrate virtual switches with Smart Sprinkler Device Type",
@@ -19,7 +20,7 @@
     
 preferences {
 	section("Connect these virtual switches to the Arduino's relays") {
-		input "switch1", title: "Switch for relay 1", "capability.switch"
+	input "switch1", title: "Switch for relay 1", "capability.switch"
         input "switch2", title: "Switch for relay 2", "capability.switch", required: false
         input "switch3", title: "Switch for relay 3", "capability.switch", required: false
         input "switch4", title: "Switch for relay 4", "capability.switch", required: false 
@@ -47,43 +48,42 @@ def updated() {
 
 def subscribe() {
 
-	// Listen to the virtual switches
-	subscribe(switch1, "switch.on", switchOn1)
-	subscribe(switch1, "switch.off", switchOff1)
-    subscribe(switch2, "switch.on", switchOn2)
-	subscribe(switch2, "switch.off", switchOff2)
-    subscribe(switch3, "switch.on", switchOn3)
-	subscribe(switch3, "switch.off", switchOff3)
-    subscribe(switch4, "switch.on", switchOn4)
-	subscribe(switch4, "switch.off", switchOff4)
-    subscribe(switch5, "switch.on", switchOn5)
-	subscribe(switch5, "switch.off", switchOff5)
-    subscribe(switch6, "switch.on", switchOn6)
-	subscribe(switch6, "switch.off", switchOff6)
-    subscribe(switch7, "switch.on", switchOn7)
-	subscribe(switch7, "switch.off", switchOff7)
-    subscribe(switch8, "switch.on", switchOn8)
-	subscribe(switch8, "switch.off", switchOff8)
+// Listen to the virtual switches
+		subscribe(switch1, "switch.on", switchOn1)
+		subscribe(switch1, "switch.off", switchOff1)
+    	subscribe(switch2, "switch.on", switchOn2)
+		subscribe(switch2, "switch.off", switchOff2)
+    	subscribe(switch3, "switch.on", switchOn3)
+		subscribe(switch3, "switch.off", switchOff3)
+    	subscribe(switch4, "switch.on", switchOn4)
+		subscribe(switch4, "switch.off", switchOff4)
+    	subscribe(switch5, "switch.on", switchOn5)
+		subscribe(switch5, "switch.off", switchOff5)
+    	subscribe(switch6, "switch.on", switchOn6)
+		subscribe(switch6, "switch.off", switchOff6)
+    	subscribe(switch7, "switch.on", switchOn7)
+		subscribe(switch7, "switch.off", switchOff7)
+    	subscribe(switch8, "switch.on", switchOn8)
+		subscribe(switch8, "switch.off", switchOff8)
     
     // Listen to anything which happens on the device
-    subscribe(arduino, "relay1.on", relayTurnOn1)
-    subscribe(arduino, "relay1.off", relayTurnOff1)
-    subscribe(arduino, "relay2.on", relayTurnOn2)
-    subscribe(arduino, "relay2.off", relayTurnOff2)
-    subscribe(arduino, "relay3.on", relayTurnOn3)
-    subscribe(arduino, "relay3.off", relayTurnOff3)
-    subscribe(arduino, "relay4.on", relayTurnOn4)
-    subscribe(arduino, "relay4.off", relayTurnOff4)
-    subscribe(arduino, "relay5.on", relayTurnOn5)
-    subscribe(arduino, "relay5.off", relayTurnOff5)
-    subscribe(arduino, "relay6.on", relayTurnOn6)
-    subscribe(arduino, "relay6.off", relayTurnOff6)
-    subscribe(arduino, "relay7.on", relayTurnOn7)
-    subscribe(arduino, "relay7.off", relayTurnOff7)
-    subscribe(arduino, "relay8.on", relayTurnOn8)
-    subscribe(arduino, "relay8.off", relayTurnOff8)
-    
-    
+    	subscribe(arduino, "zoneOne.on1", relayTurnOn1)
+    	subscribe(arduino, "zoneOne.off1", relayTurnOff1)
+    	subscribe(arduino, "zoneTwo.on2", relayTurnOn2)
+    	subscribe(arduino, "zoneTwo.off2", relayTurnOff2)
+    	subscribe(arduino, "zoneThree.on3", relayTurnOn3)
+    	subscribe(arduino, "zoneThree.off3", relayTurnOff3)
+    	subscribe(arduino, "zoneFour.on4", relayTurnOn4)
+    	subscribe(arduino, "zoneFour.off4", relayTurnOff4)
+    	subscribe(arduino, "zoneFive.on5", relayTurnOn5)
+    	subscribe(arduino, "zoneFive.off5", relayTurnOff5)
+    	subscribe(arduino, "zoneSix.on6", relayTurnOn6)
+    	subscribe(arduino, "zoneSix.off6", relayTurnOff6)
+    	subscribe(arduino, "zoneSeven.on7", relayTurnOn7)
+    	subscribe(arduino, "zoneSeven.off7", relayTurnOff7)
+    	subscribe(arduino, "zoneEight.on8", relayTurnOn8)
+    	subscribe(arduino, "zoneEight.off8", relayTurnOff8)
+
 }
 
 def switchOn1(evt)
