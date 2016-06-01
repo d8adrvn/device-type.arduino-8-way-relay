@@ -20,7 +20,7 @@
     
 preferences {
 	section("Connect these virtual switches to the Arduino's relays") {
-	input "switch1", title: "Switch for relay 1", "capability.switch"
+	input "switch1", title: "Switch for relay 1", "capability.switch", required: false
         input "switch2", title: "Switch for relay 2", "capability.switch", required: false
         input "switch3", title: "Switch for relay 3", "capability.switch", required: false
         input "switch4", title: "Switch for relay 4", "capability.switch", required: false 
