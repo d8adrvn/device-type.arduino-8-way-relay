@@ -1,0 +1,568 @@
+/**
+ *  VirtualSwitchParent
+ *
+ *  Author: d8adrvn
+ *  Credits: thanks to badgermanus@gmail.com for original code base
+ *  
+ *  TODO - add support for zones 9-24
+ */
+
+definition(
+    name: "Irrigation Virtual Switch Integration App for 16 and 24 zone irrigation controllers",
+    version: "0.7",
+    namespace: "",
+    author: "Stan Dotson",
+    description: "Connects virtual switches to the relays on my irrigation controller",
+    category: "My Apps",
+    iconUrl: "https://s3.amazonaws.com/smartapp-icons/Convenience/Cat-Convenience.png",
+    iconX2Url: "https://s3.amazonaws.com/smartapp-icons/Convenience/Cat-Convenience@2x.png"
+)
+
+preferences {
+	section("Connect these virtual switches to the Arduino's relays") {
+		input "switch1", title: "Switch for relay 1", "capability.switch"
+        input "switch2", title: "Switch for relay 2", "capability.switch", required: false
+        input "switch3", title: "Switch for relay 3", "capability.switch", required: false
+        input "switch4", title: "Switch for relay 4", "capability.switch", required: false 
+        input "switch5", title: "Switch for relay 5", "capability.switch", required: false
+        input "switch6", title: "Switch for relay 6", "capability.switch", required: false
+        input "switch7", title: "Switch for relay 7", "capability.switch", required: false
+        input "switch8", title: "Switch for relay 8", "capability.switch", required: false
+	}
+    section("Which Arduino relay board to control?") {
+  	input "arduino", "capability.switch", required: true
+    }    
+}
+
+def installed() {
+	log.debug "Installed with settings: ${settings}"
+	subscribe()
+}
+
+def updated() {
+	log.debug "Updated with settings: ${settings}"
+	unsubscribe()
+	subscribe()
+}
+
+
+def subscribe() {
+
+	// Listen to the virtual switches
+	subscribe(switch1, "switch.on", switchOn1)
+	subscribe(switch1, "switch.off", switchOff1)
+    subscribe(switch2, "switch.on", switchOn2)
+	subscribe(switch2, "switch.off", switchOff2)
+    subscribe(switch3, "switch.on", switchOn3)
+	subscribe(switch3, "switch.off", switchOff3)
+    subscribe(switch4, "switch.on", switchOn4)
+	subscribe(switch4, "switch.off", switchOff4)
+    subscribe(switch5, "switch.on", switchOn5)
+	subscribe(switch5, "switch.off", switchOff5)
+    subscribe(switch6, "switch.on", switchOn6)
+	subscribe(switch6, "switch.off", switchOff6)
+    subscribe(switch7, "switch.on", switchOn7)
+	subscribe(switch7, "switch.off", switchOff7)
+    subscribe(switch8, "switch.on", switchOn8)
+	subscribe(switch8, "switch.off", switchOff8)
+    //todo add switches 9-24
+    
+    
+    // Listen to anything which happens on the device
+    subscribe(arduino, "zoneOne.r1", relayTurnOn1)  
+    subscribe(arduino, "zoneOne.o1", relayTurnOff1)
+    subscribe(arduino, "zoneTwo.r2", relayTurnOn2)
+    subscribe(arduino, "zoneTwo.o2", relayTurnOff2)
+    subscribe(arduino, "zoneThree.r3", relayTurnOn3)
+    subscribe(arduino, "zoneThree.o3", relayTurnOff3)
+    subscribe(arduino, "zoneFour.r4", relayTurnOn4)
+    subscribe(arduino, "zoneFour.o4", relayTurnOff4)
+    subscribe(arduino, "zoneFive.r5", relayTurnOn5)
+    subscribe(arduino, "zoneFive.o5", relayTurnOff5)
+    subscribe(arduino, "zoneSix.r6", relayTurnOn6)
+    subscribe(arduino, "zoneSix.o6", relayTurnOff6)
+    subscribe(arduino, "zoneSeven.r7", relayTurnOn7)
+    subscribe(arduino, "zoneSeven.o7", relayTurnOff7)
+    subscribe(arduino, "zoneEight.r8", relayTurnOn8)
+    subscribe(arduino, "zoneEight.o8", relayTurnOff8)
+    //todo add zones 9-24
+    
+}
+
+def switchOn1(evt)
+{
+	log.debug "switchOn1($evt.name: $evt.value: $evt.deviceId)"
+    if (arduino.currentValue("zoneOne") != "r1")
+    {
+    	log.debug "Sending RelayOn1 event to Arduino"
+    	arduino.RelayOn1()
+    }
+}
+
+def switchOff1(evt)
+{
+    log.debug "switchOff1($evt.name: $evt.value: $evt.deviceId)"
+    if (arduino.currentValue("zoneOne") != "o1")
+    {
+        log.debug "Sending RelayOff1 event to Arduino"
+    	arduino.RelayOff1()
+    }
+}
+def switchOn2(evt)
+{
+	log.debug "switchOn2($evt.name: $evt.value: $evt.deviceId)"
+    if (arduino.currentValue("zoneTwo") != "r2")
+    {
+    	log.debug "Sending RelayOn2 event to Arduino"
+    	arduino.RelayOn2()
+    }
+}
+
+def switchOff2(evt)
+{
+	log.debug "switchOff2($evt.name: $evt.value: $evt.deviceId)"
+    if (arduino.currentValue("zoneTwo") != "o2")
+    {
+        log.debug "Sending RelayOff2 event to Arduino"
+    	arduino.RelayOff2()
+    }
+}
+
+def switchOn3(evt)
+{
+	log.debug "switchOn3($evt.name: $evt.value: $evt.deviceId)"
+    if (arduino.currentValue("zoneThree") != "on")
+    {
+    	log.debug "Sending RelayOn3 event to Arduino"
+    	arduino.RelayOn3()
+    }
+}
+
+def switchOff3(evt)
+{
+	log.debug "switchOff3($evt.name: $evt.value: $evt.deviceId)"
+        if (arduino.currentValue("zoneThree") != "off")
+    {
+        log.debug "Sending RelayOff3 event to Arduino"
+    	arduino.RelayOff3()
+    }
+}
+def switchOn4(evt)
+{
+	log.debug "switchOn4($evt.name: $evt.value: $evt.deviceId)"
+    if (arduino.currentValue("relay4") != "on")
+    {
+    	log.debug "Sending RelayOn4 event to Arduino"
+    	arduino.RelayOn4()
+    }
+}
+
+def switchOff4(evt)
+{
+	log.debug "switchOff4($evt.name: $evt.value: $evt.deviceId)"
+        if (arduino.currentValue("relay4") != "off")
+    {
+        log.debug "Sending RelayOff4 event to Arduino"
+    	arduino.RelayOff4()
+    }
+}
+
+def switchOn5(evt)
+{
+	log.debug "switchO5($evt.name: $evt.value: $evt.deviceId)"
+    if (arduino.currentValue("relay5") != "on")
+    {
+    	log.debug "Sending RelayOn5 event to Arduino"
+    	arduino.RelayOn5()
+    }
+}
+
+def switchOff5(evt)
+{
+	log.debug "switchOff5($evt.name: $evt.value: $evt.deviceId)"
+        if (arduino.currentValue("relay5") != "off")
+    {
+        log.debug "Sending RelayOff5 event to Arduino"
+    	arduino.RelayOff5()
+    }
+}
+def switchOn6(evt)
+{
+	log.debug "switchOn6($evt.name: $evt.value: $evt.deviceId)"
+    if (arduino.currentValue("relay6") != "on")
+    {
+    	log.debug "Sending RelayOn6 event to Arduino"
+    	arduino.RelayOn6()
+    }
+}
+
+def switchOff6(evt)
+{
+	log.debug "switchOff6($evt.name: $evt.value: $evt.deviceId)"
+        if (arduino.currentValue("relay6") != "off")
+    {
+        log.debug "Sending RelayOff6 event to Arduino"
+    	arduino.RelayOff6()
+    }
+}
+
+def switchOn7(evt)
+{
+	log.debug "switchOn7($evt.name: $evt.value: $evt.deviceId)"
+    if (arduino.currentValue("relay7") != "on")
+    {
+    	log.debug "Sending RelayOn7 event to Arduino"
+    	arduino.RelayOn7()
+    }
+}
+
+def switchOff7(evt)
+{
+	log.debug "switchOff7($evt.name: $evt.value: $evt.deviceId)"
+        if (arduino.currentValue("relay7") != "off")
+    {
+        log.debug "Sending RelayOff7 event to Arduino"
+    	arduino.RelayOff7()
+    }
+}
+def switchOn8(evt)
+{
+	log.debug "switchOn8($evt.name: $evt.value: $evt.deviceId)"
+    if (arduino.currentValue("relay8") != "on")
+    {
+    	log.debug "Sending RelayOn8 event to Arduino"
+    	arduino.RelayOn8()
+    }
+}
+
+def switchOff8(evt)
+{
+	log.debug "switchOff8($evt.name: $evt.value: $evt.deviceId)"
+    if (arduino.currentValue("relay8") != "off")
+    {
+        log.debug "Sending RelayOff8 event to Arduino"
+    	arduino.RelayOff8()
+    }
+}
+
+
+
+
+def relayTurnOn1(evt)
+{
+	log.debug "Relay 1 was turned on"
+	if (switch1.currentValue("switch") != "on")
+	{
+    	log.debug "Flipping virtual switch 1 on"
+        switch1.on()
+    }
+}
+
+
+def relayTurnOff1(evt)
+{
+	log.debug "Relay 1 was turned off"
+	if (switch1.currentValue("switch") != "off")
+	{
+    	log.debug "Flipping virtual switch 1 off"
+    	switch1.off()
+    }
+}
+
+def relayTurnOn2(evt)
+{
+	log.debug "Relay 2 was turned on"
+	if (switch1.currentValue("switch") != "on")
+	{
+    	log.debug "Flipping virtual switch 2 on"
+    	switch2.on()
+    }
+}
+
+def relayTurnOff2(evt)
+{
+	log.debug "Relay 2 was turned off"
+	if (switch2.currentValue("switch") != "off")
+	{
+    	log.debug "Flipping virtual switch 2 off"
+    	switch2.off()
+    }
+}
+
+def relayTurnOn3(evt)
+{
+	log.debug "Relay 3 was turned on"
+	if (switch3.currentValue("switch") != "on")
+	{
+    	log.debug "Flipping virtual switch 3 on"
+        switch3.on()
+    }
+}
+
+def relayTurnOff3(evt)
+{
+	log.debug "Relay 3 was turned off"
+	if (switch3.currentValue("switch") != "off")
+	{
+    	log.debug "Flipping virtual switch 3 off"
+    	switch3.off()
+    }
+}
+
+def relayTurnOn4(evt)
+{
+	log.debug "Relay 4 was turned on"
+	if (switch4.currentValue("switch") != "on")
+	{
+    	log.debug "Flipping virtual switch 4 on"
+        switch4.on()
+    }
+}
+
+def relayTurnOff4(evt)
+{
+	log.debug "Relay 4 was turned off"
+	if (switch4.currentValue("switch") != "off")
+	{
+    	log.debug "Flipping virtual switch 4 off"
+    	switch4.off()
+    }
+}
+
+def relayTurnOn5(evt)
+{
+	log.debug "Relay 5 was turned on"
+	if (switch5.currentValue("switch") != "on")
+	{
+    	log.debug "Flipping virtual switch 5 on"
+        switch5.on()
+    }
+}
+
+def relayTurnOff5(evt)
+{
+	log.debug "Relay 5 was turned off"
+	if (switch5.currentValue("switch") != "off")
+	{
+    	log.debug "Flipping virtual switch 5 off"
+    	switch5.off()
+    }
+}
+
+def relayTurnOn6(evt)
+{
+	log.debug "Relay 6 was turned on"
+	if (switch6.currentValue("switch") != "on")
+	{
+    	log.debug "Flipping virtual switch 6 on"
+        switch6.on()
+    }
+}
+
+def relayTurnOff6(evt)
+{
+	log.debug "Relay 6 was turned off"
+	if (switch6.currentValue("switch") != "off")
+	{
+    	log.debug "Flipping virtual switch 6 off"
+    	switch6.off()
+    }
+}
+
+def relayTurnOn7(evt)
+{
+	log.debug "Relay 7 was turned on"
+	if (switch7.currentValue("switch") != "on")
+	{
+    	log.debug "Flipping virtual switch 7 on"
+        switch7.on()
+    }
+}
+def relayTurnOff7(evt)
+{
+	log.debug "Relay 7 was turned off"
+	if (switch7.currentValue("switch") != "off")
+	{
+    	log.debug "Flipping virtual switch 7 off"
+    	switch7.off()
+    }
+}
+
+def relayTurnOn8(evt)
+{
+	log.debug "Relay 8 was turned on"
+	if (switch8.currentValue("switch") != "on")
+	{
+    	log.debug "Flipping virtual switch 8 on"
+        switch8.on()
+    }
+}
+def relayTurnOff8(evt)
+{
+	log.debug "Relay 8 was turned off"
+	if (switch8.currentValue("switch") != "off")
+	{
+    	log.debug "Flipping virtual switch 8 off"
+    	switch8.off()
+    }
+}
+
+def relayTurnOn9(evt)
+{
+	log.debug "Relay 9 was turned on"
+	if (switchX.currentValue("switch") != "on")
+	{
+    	log.debug "Flipping virtual switch 9 on"
+        switch9.on()
+    }
+}
+
+def relayTurnOff9(evt)
+{
+	log.debug "Relay 9 was turned off"
+	if (switch9.currentValue("switch") != "off")
+	{
+    	log.debug "Flipping virtual switch 9 off"
+    	switch9.off()
+    }
+}
+
+def relayTurnOn10(evt)
+{
+	log.debug "Relay 10 was turned on"
+	if (switch10.currentValue("switch") != "on")
+	{
+    	log.debug "Flipping virtual switch 10 on"
+        switch10.on()
+    }
+}
+
+def relayTurnOff10(evt)
+{
+	log.debug "Relay 10 was turned off"
+	if (switch10.currentValue("switch") != "off")
+	{
+    	log.debug "Flipping virtual switch 10 off"
+    	switch10.off()
+    }
+}
+def relayTurnOn11(evt)
+{
+	log.debug "Relay 11 was turned on"
+	if (switch11.currentValue("switch") != "on")
+	{
+    	log.debug "Flipping virtual switch 11 on"
+        switch11.on()
+    }
+}
+
+
+def relayTurnOff11(evt)
+{
+	log.debug "Relay 11 was turned off"
+	if (switch11.currentValue("switch") != "off")
+	{
+    	log.debug "Flipping virtual switch 11 off"
+    	switch11.off()
+    }
+}
+
+def relayTurnOn12(evt)
+{
+	log.debug "Relay 12 was turned on"
+	if (switch12.currentValue("switch") != "on")
+	{
+    	log.debug "Flipping virtual switch 12 on"
+    	switch12.on()
+    }
+}
+
+def relayTurnOff12(evt)
+{
+	log.debug "Relay 12 was turned off"
+	if (switch12.currentValue("switch") != "off")
+	{
+    	log.debug "Flipping virtual switch 12 off"
+    	switch12.off()
+    }
+}
+
+def relayTurnOn13(evt)
+{
+	log.debug "Relay 13 was turned on"
+	if (switch13.currentValue("switch") != "on")
+	{
+    	log.debug "Flipping virtual switch 13 on"
+        switch13.on()
+    }
+}
+
+def relayTurnOff13(evt)
+{
+	log.debug "Relay 13 was turned off"
+	if (switch13.currentValue("switch") != "off")
+	{
+    	log.debug "Flipping virtual switch 13 off"
+    	switch13.off()
+    }
+}
+
+def relayTurnOn14(evt)
+{
+	log.debug "Relay 14 was turned on"
+	if (switch14.currentValue("switch") != "on")
+	{
+    	log.debug "Flipping virtual switch 14 on"
+        switch14.on()
+    }
+}
+
+def relayTurnOff14(evt)
+{
+	log.debug "Relay 14 was turned off"
+	if (switch14.currentValue("switch") != "off")
+	{
+    	log.debug "Flipping virtual switch 14 off"
+    	switch14.off()
+    }
+}
+
+def relayTurnOn15(evt)
+{
+	log.debug "Relay 15 was turned on"
+	if (switch15.currentValue("switch") != "on")
+	{
+    	log.debug "Flipping virtual switch 15 on"
+        switch15.on()
+    }
+}
+
+def relayTurnOff15(evt)
+{
+	log.debug "Relay 15 was turned off"
+	if (switch15.currentValue("switch") != "off")
+	{
+    	log.debug "Flipping virtual switch 15 off"
+    	switch15.off()
+    }
+}
+
+def relayTurnOn16(evt)
+{
+	log.debug "Relay 16 was turned on"
+	if (switch16.currentValue("switch") != "on")
+	{
+    	log.debug "Flipping virtual switch 16 on"
+        switch16.on()
+    }
+}
+
+def relayTurnOff16(evt)
+{
+	log.debug "Relay 16 was turned off"
+	if (switch16.currentValue("switch") != "off")
+	{
+    	log.debug "Flipping virtual switch 16 off"
+    	switch16.off()
+    }
+}
